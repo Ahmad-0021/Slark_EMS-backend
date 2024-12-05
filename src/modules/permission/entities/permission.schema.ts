@@ -9,4 +9,4 @@ export class Permission extends Document {
   description?: string;
 }
 
-export const RoleSchema = SchemaFactory.createForClass(Permission);
+export const PermissionSchema = SchemaFactory.createForClass(Permission);

@@ -28,5 +28,5 @@ export class RegisterUserDto {
 
   @IsEnum(['visitor', 'admin', 'user'])
   @IsNotEmpty()
-  role: 'visitor' | 'admin' | 'user';
+  role: 'subAdmin' | 'admin' | 'employee';
 }
