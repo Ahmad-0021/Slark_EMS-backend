@@ -7,10 +7,7 @@ import {
 } from 'class-validator';
 
 export class LoginDto {
-  @IsString()
-  @IsOptional()
-  @IsNotEmpty()
-  username?: string;
+
 
   @IsString()
   @IsOptional()

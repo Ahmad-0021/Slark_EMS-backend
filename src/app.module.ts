@@ -7,6 +7,10 @@ import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { CommonModule } from './common/common.module';
 import { RoleModule } from './modules/role/role.module';
+import { PermissionModule } from './modules/permission/permission.module';
+import { AdminModule } from './modules/admin/admin.module';
+import { ConsoleModule } from 'nestjs-console';
+import { InvoiceModule } from './modules/invoice/invoice.module';
 
 @Module({
   imports: [
@@ -23,6 +27,10 @@ import { RoleModule } from './modules/role/role.module';
     UserModule,
     CommonModule,
     RoleModule,
+    PermissionModule,
+    AdminModule,
+    ConsoleModule,
+    InvoiceModule,
   ],
   controllers: [AppController],
   providers: [AppService],

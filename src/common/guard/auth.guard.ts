@@ -11,13 +11,21 @@ import * as jwt from 'jsonwebtoken';
 export class AuthGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest();
-    const authHeader = request.headers['authorization'];
+    const authHeader = request.headers.authorization;
 
     // Check if authorization header is present
     if (!authHeader) {
       throw new HttpException(
         { message: 'Token not found', success: false },
         HttpStatus.NOT_FOUND,
+      );
+    }
+
+    // Validate Bearer token format
+    if (!authHeader.startsWith('Bearer')) {
+      throw new HttpException(
+        { message: 'Invalid authorization header format', success: false },
+        HttpStatus.BAD_REQUEST,
       );
     }
 
@@ -30,21 +38,39 @@ export class AuthGuard implements CanActivate {
       );
     }
 
+    // Ensure JWT_SECRET_KEY is present
+    if (!process.env.JWT_SECRET_KEY) {
+      throw new HttpException(
+        {
+          message: 'Server configuration error: Missing JWT secret key',
+          success: false,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
     try {
       // Verify the token
-      const decoded = jwt.verify(token, process.env.SECRET_KEY);
+      const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
       if (!decoded) {
         throw new HttpException(
           { message: 'Invalid token', success: false },
           HttpStatus.UNAUTHORIZED,
         );
       }
-      request.user = decoded; // Attach user info to the request
+
+      // Attach user info to the request
+      request.user = decoded;
+      
       return true;
     } catch (error) {
       // Handle invalid or expired token
       throw new HttpException(
-        { message: 'Invalid token', success: false },
+        {
+          message: 'Invalid or expired token',
+          success: false,
+          error: error.message,
+        },
         HttpStatus.UNAUTHORIZED,
       );
     }

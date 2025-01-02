@@ -4,7 +4,7 @@ import { Role } from './entities/role.schema';
 import mongoose, { Model } from 'mongoose';
 import { RoleDto } from './dto/roleDto';
 import { Request, Response } from 'express';
-import { transformObject, transformRole } from './utils/transform.object';
+import { transformObject, transformArray } from '../../common/transform.object';
 import { UserRoles } from 'src/common/enum';
 
 @Injectable()
@@ -47,10 +47,11 @@ export class RoleService {
         });
       }
       const totalCount = await this.roleModel.countDocuments();
-      const roles = await this.roleModel.find();
-      // .populate('permissions')
-      // .skip(skip)
-      // .limit(limits);
+      const roles = await this.roleModel
+        .find()
+        // .populate('permissions')
+        .skip(skip)
+        .limit(limits);
 
       if (roles.length === 0) {
         return res.status(HttpStatus.NOT_FOUND).json({
@@ -58,7 +59,7 @@ export class RoleService {
           success: false,
         });
       }
-      const updateRole = transformRole(roles);
+      const updateRole = transformArray(roles);
 
       return res.status(HttpStatus.OK).json({
         message: 'Successfully retrived roles',
@@ -158,7 +159,9 @@ export class RoleService {
           success: false,
         });
       }
-      const role = await this.roleModel.findOne({ $or: [{_id: id }, { name }] });
+      const role = await this.roleModel.findOne({
+        $or: [{ _id: id }, { name }],
+      });
       console.log(role);
       if (!role) {
         return res.status(HttpStatus.NOT_FOUND).json({

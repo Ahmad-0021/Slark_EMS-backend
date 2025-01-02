@@ -50,6 +50,9 @@ export class AuthService {
 
       // Generate JWT token
       const tokenPayload: IUser = {
+        username: newUser.username,
+        basicPayForThisMonth: newUser.basicPayForThisMonth,
+        committedHoursForThisMonth: newUser.committedHoursForThisMonth,
         id: newUser._id.toString(),
         email: newUser.email,
         role: newUser.role.toString(),
@@ -60,7 +63,7 @@ export class AuthService {
       return res.status(HttpStatus.CREATED).json({
         message: 'User created successfully',
         success: true,
-        data: genToken,
+        data: { token: genToken },
       });
     } catch (error) {
       console.error('Error during registration:', error.message);
@@ -73,10 +76,10 @@ export class AuthService {
 
   async loginUser(loginUserDto: LoginDto, res: Response) {
     try {
-      const { username, email, password } = loginUserDto;
+      const { email, password } = loginUserDto;
 
       const user = await this.userModel.findOne({
-        $or: [{ email }, { username }],
+        email: email,
       });
       const verifyPassword = await comparePassword(password, user.password);
       if (!user || !verifyPassword) {
@@ -86,6 +89,9 @@ export class AuthService {
         });
       }
       const tokenPayload: IUser = {
+        username: user.username,
+        basicPayForThisMonth: user.basicPayForThisMonth,
+        committedHoursForThisMonth: user.committedHoursForThisMonth,
         id: user._id.toString(),
         email: user.email,
         role: user.role.toString(),
@@ -95,7 +101,7 @@ export class AuthService {
       return res.status(HttpStatus.OK).json({
         message: 'LoggedIn successfully ',
         success: true,
-        data: { token },
+        token,
       });
     } catch (error) {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({

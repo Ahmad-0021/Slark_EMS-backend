@@ -1,9 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
-export const MODEL_NAMES = {
-  Invoice: 'Invoice',
-  Role: 'Role',
-};
+import { Role } from 'src/modules/role/entities/role.schema';
 
 @Schema()
 export class User extends Document {
@@ -19,8 +16,15 @@ export class User extends Document {
   @Prop({
     type: [{ type: { type: Types.ObjectId, ref: 'Invoice' } }],
   })
-  invoices: { type: Types.ObjectId; ref: 'Invoice' }[];
-  @Prop({ type: Types.ObjectId, ref: 'Role', required: true })
+  invoices: Types.ObjectId[];
+
+  @Prop({ type: Number, required: true })
+  basicPayForThisMonth: number;
+
+  @Prop({ type: Number, required: true })
+  committedHoursForThisMonth: number;
+
+  @Prop({ type: Types.ObjectId, ref: Role.name, required: true })
   role: Types.ObjectId;
 }
 

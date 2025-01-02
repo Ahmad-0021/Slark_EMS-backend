@@ -2,6 +2,9 @@ import { Injectable } from '@nestjs/common';
 import * as jwt from 'jsonwebtoken';
 
 export interface IUser {
+  username: string;
+  basicPayForThisMonth: number;
+  committedHoursForThisMonth: number;
   id: string;
   email: string;
   role: string;
@@ -23,3 +26,4 @@ export class JwtService {
     }
   }
 }
+ 
