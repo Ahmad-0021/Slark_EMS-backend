@@ -64,7 +64,6 @@ export class InvoiceService {
           salaryDetails.requiredTotalHoursForThisMonth,
         user: user?.id,
       });
-      console.log(salaryDetails);
 
       await this.userModel.findByIdAndUpdate(user?.id, {
         $push: { invoices: invoice._id },

@@ -162,7 +162,6 @@ export class RoleService {
       const role = await this.roleModel.findOne({
         $or: [{ _id: id }, { name }],
       });
-      console.log(role);
       if (!role) {
         return res.status(HttpStatus.NOT_FOUND).json({
           message: 'role not found ',

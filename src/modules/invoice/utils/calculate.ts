@@ -33,7 +33,6 @@ export const calculateSalaryDetails = (
     publiceLeaveWorkingHourForThisMonth=0,
     
   } = dto;
-  console.log(dto, 'dto');
   const { basicPayForThisMonth, committedHoursForThisMonth } = existUser;
 
   const oneDayHours =
@@ -60,7 +59,6 @@ export const calculateSalaryDetails = (
         requiredTotalHoursForThisMonth -
         publiceLeaveWorkingHourForThisMonth
       : 0;
-      console.log(overTimeHoursForThisMonth, 'overTimeHoursForThisMonth');
 
   const basicPayThisMonth = Math.min(
     basicPayForThisMonth,
@@ -83,11 +81,7 @@ export const calculateSalaryDetails = (
 
   const paidLeavesForThisMonth = publiceLeavesForThisMonth;
 
-  console.log(overTimePayThisMonth, 'overtime');
-console.log(basicPayThisMonth, 'basicPayThisMonth');
-// console.log(publiceLeaveWorkingHourForThisMonth, 'publiceLeaveWorkingHourForThisMonth');
-
-
+  
   // Build the result object
   const result: IInvoiceCalculationResult = {
     requiredTotalHoursForThisMonth: Math.ceil(
