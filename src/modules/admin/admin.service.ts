@@ -151,8 +151,6 @@ export class AdminService {
         basicPayForThisMonth,
         committedHoursForThisMonth,
       } = dto;
-
-      -6;
       const existsRole = await this.roleModel.findOne({ name: role });
       if (!existsRole) {
         return res.status(HttpStatus.BAD_REQUEST).json({
