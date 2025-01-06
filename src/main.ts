@@ -7,7 +7,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
   app.enableCors({
-    origin: 'https://slark-ems-frontend.vercel.app', // Allowed frontend
+    origin: `${process.env.CORS_ORIGIN}`, // Allowed frontend
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: ['Content-Type', 'Authorization'], // Headers allowed
     credentials: true, // Allow cookies and authorization headers
