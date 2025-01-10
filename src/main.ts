@@ -6,7 +6,10 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
   app.enableCors({
-    origin: process.env.CORS_ORIGIN || 'https://slark-ems-frontend.vercel.app',
+    origin: [
+      process.env.CORS_ORIGIN || 'https://slark-ems-frontend.vercel.app',
+      'http://localhost:3000',
+    ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: ['Content-Type', 'Authorization'], // Headers allowed
     credentials: true,

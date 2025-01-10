@@ -14,7 +14,7 @@ export class User extends Document {
   password: string;
 
   @Prop({
-    type: [{ type: { type: Types.ObjectId, ref: 'Invoice' } }],
+    type: [{ type: Types.ObjectId, ref: 'Invoice' }],
   })
   invoices: Types.ObjectId[];
 

@@ -83,7 +83,8 @@ export class AdminService {
       const user = await this.userModel
         .findById(id)
         .select('-password -__v')
-        .populate('role');
+        .populate('role')
+      .populate('invoices');
 
       // Check if user exists
       if (!user) {

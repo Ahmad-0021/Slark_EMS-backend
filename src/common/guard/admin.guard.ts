@@ -20,9 +20,11 @@ export class AdminGuard implements CanActivate {
     if (!user || !user.role) {
       throw new ForbiddenException('Access denied. User role is missing.');
     }
+    console.log(user,'admin')
 
     // Fetch role details from the database
     const role = await this.roleModel.findById(user.role);
+    console.log(role)
 
     // Check if user exists and has the 'admin' role
     if (role && role.name === 'admin') {

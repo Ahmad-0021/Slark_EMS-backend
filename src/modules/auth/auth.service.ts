@@ -78,9 +78,11 @@ export class AuthService {
     try {
       const { email, password } = loginUserDto;
 
-      const user = await this.userModel.findOne({
-        email: email,
-      });
+      const user = await this.userModel
+        .findOne({
+          email: email,
+        })
+      
       const verifyPassword = await comparePassword(password, user.password);
       if (!user || !verifyPassword) {
         return res.status(HttpStatus.BAD_REQUEST).json({
@@ -94,7 +96,7 @@ export class AuthService {
         committedHoursForThisMonth: user.committedHoursForThisMonth,
         id: user._id.toString(),
         email: user.email,
-        role: user.role.toString(),
+        role: user.role._id.toString(),
       };
       const token = this.jwt.generateToken(tokenPayload);
 
@@ -102,6 +104,7 @@ export class AuthService {
         message: 'LoggedIn successfully ',
         success: true,
         token,
+        role: user.role,
       });
     } catch (error) {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({

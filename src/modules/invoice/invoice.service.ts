@@ -96,9 +96,7 @@ export class InvoiceService {
         });
       }
       const skip = (page - 1) * limit;
-      const totalCount = await this.invoiceModel.countDocuments({
-        user: user.id,
-      });
+      const totalCount = await this.invoiceModel.countDocuments();
       const invoice = await this.invoiceModel
         .find({ user: user.id })
         .select('-__v -password')
