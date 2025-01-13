@@ -25,6 +25,10 @@ export class RegisterUserDto {
   @MinLength(8, { message: 'password must have 8 characters' })
   password: string;
 
+  @IsString()
+  @IsNotEmpty()
+  type: string;
+
   @IsNumber()
   @IsNotEmpty()
   @Type(() => Number)

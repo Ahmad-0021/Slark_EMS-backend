@@ -200,7 +200,7 @@ export class InvoiceService {
       });
     }
   }
-  async updateInoice(
+  async updateInvoice(
     query: any,
     res: Response,
     req: Request,
@@ -216,6 +216,7 @@ export class InvoiceService {
           success: false,
         });
       }
+
       const existUser = await this.userModel.findById(user.id);
       if (!existUser) {
         return res.status(HttpStatus.NOT_FOUND).json({
@@ -223,29 +224,35 @@ export class InvoiceService {
           success: false,
         });
       }
+
       const calculatedSalary = calculateSalaryDetails(existUser, dto);
+
       const Invoice = await this.invoiceModel.findOneAndUpdate(
         { slug: slug },
         { ...calculatedSalary },
-        { new: true },
+        { new: true }, // Ensure updated document is returned
       );
+
       if (!Invoice) {
         return res.status(HttpStatus.NOT_FOUND).json({
           message: 'Invoice not found',
           success: false,
         });
       }
+
+      // Update user's invoice list
       await this.userModel.findByIdAndUpdate(user?.id, {
         $push: { invoices: Invoice._id },
       });
 
       const updatedInvoice = transformInvoice(Invoice);
       return res.status(HttpStatus.OK).json({
-        message: 'Invoiced updated successfully',
+        message: 'Invoice updated successfully',
         success: true,
         invoice: updatedInvoice,
       });
     } catch (error) {
+      console.error('Error updating invoice:', error.message);
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
         message: error.message,
         success: false,

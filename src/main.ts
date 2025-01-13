@@ -9,12 +9,13 @@ async function bootstrap() {
     origin: [
       process.env.CORS_ORIGIN || 'https://slark-ems-frontend.vercel.app',
       'http://localhost:3000',
+      'http://localhost:3001',
     ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: ['Content-Type', 'Authorization'], // Headers allowed
     credentials: true,
   });
 
-  await app.listen(3001, '0.0.0.0');
+  await app.listen(3002, '0.0.0.0');
 }
 bootstrap();

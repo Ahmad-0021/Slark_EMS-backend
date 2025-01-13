@@ -7,11 +7,13 @@ import { comparePassword, hashPassword } from './utils/hashedPassword';
 import { Response } from 'express';
 import { IUser, JwtService } from './jwt/jwt.service';
 import { LoginDto } from './dto/loginUserDto';
+import { Role } from '../role/entities/role.schema';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
+    @InjectModel(Role.name) private readonly roleModel: Model<Role>,
     private readonly jwt: JwtService,
   ) {}
 
@@ -74,21 +76,38 @@ export class AuthService {
     }
   }
 
-  async loginUser(loginUserDto: LoginDto, res: Response) {
+  async loginUser(loginUserDto: LoginDto, res: Response, req: Request) {
     try {
       const { email, password } = loginUserDto;
 
-      const user = await this.userModel
-        .findOne({
-          email: email,
-        })
-      
-      const verifyPassword = await comparePassword(password, user.password);
-      if (!user || !verifyPassword) {
+      const user = await this.userModel.findOne({
+        email: email,
+      });
+      if (!user) {
         return res.status(HttpStatus.BAD_REQUEST).json({
           message: 'Invalid credentials',
           success: false,
         });
+      }
+
+      const verifyPassword = await comparePassword(password, user.password);
+      if (!verifyPassword) {
+        return res.status(HttpStatus.BAD_REQUEST).json({
+          message: 'Invalid credentials',
+          success: false,
+        });
+      }
+
+      // const origin = req.headers.origin || req.headers.referrer;
+      const origin = req.headers['origin'] || 'Unknown Origin';
+      if (origin === process.env.ADMIN_PORTAL_URL) {
+        const role = await this.roleModel.findOne({ _id: user.role });
+        if (role.name !== 'admin') {
+          return res.status(HttpStatus.BAD_REQUEST).json({
+            message: 'Invalid credentials',
+            success: false,
+          });
+        }
       }
       const tokenPayload: IUser = {
         username: user.username,

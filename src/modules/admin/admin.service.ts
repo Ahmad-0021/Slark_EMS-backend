@@ -84,7 +84,7 @@ export class AdminService {
         .findById(id)
         .select('-password -__v')
         .populate('role')
-      .populate('invoices');
+        .populate('invoices');
 
       // Check if user exists
       if (!user) {
@@ -151,6 +151,7 @@ export class AdminService {
         role,
         basicPayForThisMonth,
         committedHoursForThisMonth,
+        type,
       } = dto;
       const existsRole = await this.roleModel.findOne({ name: role });
       if (!existsRole) {
@@ -163,6 +164,7 @@ export class AdminService {
       const newUser = await this.userModel.create({
         username,
         email,
+        type,
         password: hashedpassword,
         role: existsRole._id,
         committedHoursForThisMonth: committedHoursForThisMonth,

@@ -63,6 +63,6 @@ export class InvoiceController {
     @Req() req: Request,
     @Body() dto: UpdateInvoiceDto,
   ) {
-    return await this.invoiceService.updateInoice(query, res, req, dto);
+    return await this.invoiceService.updateInvoice(query, res, req, dto);
   }
 }
