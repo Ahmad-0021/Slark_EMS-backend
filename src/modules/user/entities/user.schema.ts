@@ -23,8 +23,8 @@ export class User extends Document {
   @Prop({ type: Types.ObjectId, ref: Role.name, required: true })
   role: Types.ObjectId;
   @Prop({
-    type: Date,
-    default: Date.now,
+    type: String,
+    required: true,
   })
   joiningDate: string;
 }

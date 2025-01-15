@@ -48,17 +48,11 @@ export class UpdateUserDto {
   role?: Types.ObjectId;
 
   @IsOptional()
-  @Transform(({ value }) => {
-    // Parse mm/dd/yyyy to a valid Date object
-    const [month, day, year] = value.split('/');
-    return new Date(Date.UTC(+year, +month - 1, +day));
-  })
-  @IsOptional()
-  @Transform(({ value }) => {
-    // Extracting only the date part (yyyy-mm-dd)
-    const date = new Date(value);
-    return date.toISOString().split('T')[0]; // 'yyyy-mm-dd' format
-  })
+  // @Transform(({ value }) => {
+  //   // Extracting only the date part (yyyy-mm-dd)
+  //   const date = new Date(value);
+  //   return date.toISOString().split('T')[0]; // 'yyyy-mm-dd' format
+  // })
   @IsString()
   joiningDate?: string;
 }

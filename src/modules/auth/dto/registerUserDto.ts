@@ -47,12 +47,12 @@ export class RegisterUserDto {
   @IsNotEmpty()
   role: Types.ObjectId;
 
-  @IsOptional()
-  @Transform(({ value }) => {
-    // Extracting only the date part (yyyy-mm-dd)
-    const date = new Date(value);
-    return date.toISOString().split('T')[0]; // 'yyyy-mm-dd' format
-  })
+  @IsNotEmpty()
+  // @Transform(({ value }) => {
+  //   // Extracting only the date part (yyyy-mm-dd)
+  //   const date = new Date(value);
+  //   return date.toISOString().split('T')[0]; // 'yyyy-mm-dd' format
+  // })
   @IsString()
   joiningDate?: string;
 }
