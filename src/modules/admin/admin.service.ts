@@ -152,7 +152,15 @@ export class AdminService {
         basicPayForThisMonth,
         committedHoursForThisMonth,
         type,
+        joiningDate,
       } = dto;
+      const existUser = await this.userModel.findOne({ email: email });
+      if (existUser) {
+        return res.status(HttpStatus.BAD_REQUEST).json({
+          message: 'User already exists',
+          success: false,
+        });
+      }
       const existsRole = await this.roleModel.findOne({ name: role });
       if (!existsRole) {
         return res.status(HttpStatus.BAD_REQUEST).json({
@@ -165,6 +173,7 @@ export class AdminService {
         username,
         email,
         type,
+        joiningDate,
         password: hashedpassword,
         role: existsRole._id,
         committedHoursForThisMonth: committedHoursForThisMonth,

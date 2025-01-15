@@ -22,6 +22,11 @@ export class User extends Document {
   committedHoursForThisMonth: number;
   @Prop({ type: Types.ObjectId, ref: Role.name, required: true })
   role: Types.ObjectId;
+  @Prop({
+    type: Date,
+    default: Date.now,
+  })
+  joiningDate: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

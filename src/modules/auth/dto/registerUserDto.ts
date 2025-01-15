@@ -1,9 +1,11 @@
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import {
+  IsDate,
   IsEmail,
   IsEnum,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
   MinLength,
 } from 'class-validator';
@@ -44,4 +46,13 @@ export class RegisterUserDto {
 
   @IsNotEmpty()
   role: Types.ObjectId;
+
+  @IsOptional()
+  @Transform(({ value }) => {
+    // Extracting only the date part (yyyy-mm-dd)
+    const date = new Date(value);
+    return date.toISOString().split('T')[0]; // 'yyyy-mm-dd' format
+  })
+  @IsString()
+  joiningDate?: string;
 }
